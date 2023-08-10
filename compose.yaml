@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  #Это конфигурация Docker Compose для игрового сервера Garry's Mod.
+  garrysmod-server:
+    container_name: garrysmod-server
+    env_file: garrysmod.env
+    image: ceifa/garrysmod:latest
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+      traefik.enable: "false"
+    ports:
+      - "27015:27015"
+      - "27015:27015/udp"
+      - "27005:27005/udp"
+      - "27020:27020/udp"
+      - "26900:26900/udp"
+    stdin_open: true
+    tty: true
+    volumes:
+      - "./garrysmod/addons:/home/gmod/server/garrysmod/addons"
+      - "./garrysmod/cache:/home/gmod/server/steam_cache"
+      - "./garrysmod/cfg/banned_ip.cfg:/home/gmod/server/garrysmod/cfg/banned_ip.cfg"
+      - "./garrysmod/cfg/banned_user.cfg:/home/gmod/server/garrysmod/cfg/banned_user.cfg"
+      - "./garrysmod/cfg/mount.cfg:/home/gmod/server/garrysmod/cfg/mount.cfg"
+      - "./garrysmod/cfg/server.cfg:/home/gmod/server/garrysmod/cfg/server.cfg"
+      - "./garrysmod/data:/home/gmod/server/garrysmod/data"
+      - "./garrysmod/gamemodes:/home/gmod/server/garrysmod/gamemodes"
+      - "./garrysmod/lua/bin:/home/gmod/server/garrysmod/lua/bin"
+      - "./garrysmod/mounts/samplecontent:/home/gmod/mounts/samplecontent"
+      - "./garrysmod/sv.db:/home/gmod/server/garrysmod/sv.db"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+
+networks:
+  default:
+    external: true
+    name: $NETWORK
